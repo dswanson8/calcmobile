@@ -1,1 +1,43 @@
 /* Additional styles if you want to split from inline CSS in index.html. Currently unused. */
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 10px 20px 0;
+}
+.keypad button, .keypad-utility button, #enter {
+  background:#1e293b;
+  border:1px solid rgba(255,255,255,.1);
+  color:#fff;
+  padding:14px;
+  font-size:18px;
+  border-radius:10px;
+  cursor:pointer;
+}
+.keypad button:hover,
+.keypad-utility button:hover,
+#enter:hover {
+  border-color: rgba(56,189,248,.6);
+}
+.keypad-utility {
+  display:flex;
+  gap:8px;
+  padding:10px 20px 20px;
+  justify-content:space-between;
+}
+.input {
+  display:flex;
+  gap:8px;
+  padding: 10px 20px 0;
+}
+.input input {
+  flex:1;
+  font-size:18px;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.2);
+  background:#0b1220;
+  color:#fff;
+}
+.hint { opacity:.7; font-size:12px; }
