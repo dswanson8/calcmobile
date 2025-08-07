@@ -138,10 +138,3 @@ document.getElementById('btn-copy-last')?.addEventListener('click', async () => 
     catch { statusEl.textContent = 'Copy failed'; }
   }
 });
-
-/*If you want to force users to only use the on-screen keypad on phones, you can make the input read‑only when a touch device is detected:
-*/
-if ('ontouchstart' in window) {
-  inputEl.setAttribute('readonly', 'readonly'); // tap keypad to enter
-}
-
