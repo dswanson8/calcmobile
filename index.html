@@ -61,28 +61,37 @@
   
   <!-- VIRTUAL KEYPAD -->
   <div class="numpad" aria-label="Calculator keypad">
-  <button class="key" data-key="NumLock" aria-label="Num Lock">Num<br>Lock</button>
+  <!-- Row 1 -->
+  <button class="key" data-key="CE">CE</button>
   <button class="key" data-key="/">/</button>
   <button class="key" data-key="*">*</button>
+  <button class="key minus" data-key="-">−</button>
+  
+  <!-- Row 2 -->
+  <button class="key" data-key="7">7</button>
+  <button class="key" data-key="8">8</button>
+  <button class="key" data-key="9">9</button>
   <button class="key tall plus" data-key="+">+</button>
   
-  <button class="key" data-key="7">7<br><small>Home</small></button>
-  <button class="key" data-key="8">8<br><small>↑</small></button>
-  <button class="key" data-key="9">9<br><small>Pg Up</small></button>
+  <!-- Row 3 -->
+  <button class="key" data-key="4">4</button>
+  <button class="key" data-key="5">5</button>
+  <button class="key" data-key="6">6</button>
+  <!-- plus continues here (tall) -->
   
-  <button class="key" data-key="4">4<br><small>End</small></button>
-  <button class="key" data-key="5">5<br><small>•</small></button>
-  <button class="key" data-key="6">6<br><small>→</small></button>
+  <!-- Row 4 -->
+  <button class="key" data-key="1">1</button>
+  <button class="key" data-key="2">2</button>
+  <button class="key" data-key="3">3</button>
   <button class="key tall enter" data-key="Enter">Enter</button>
   
-  <button class="key" data-key="1">1<br><small>←</small></button>
-  <button class="key" data-key="2">2<br><small>↓</small></button>
-  <button class="key" data-key="3">3<br><small>Pg Dn</small></button>
-  
-  <button class="key wide" data-key="0">0<br><small>Ins</small></button>
-  <button class="key" data-key=".">.<br><small>Del</small></button>
-  <button class="key" data-key="-">−</button>
+  <!-- Row 5 -->
+  <button class="key" data-key="0">0</button>
+  <button class="key" data-key="0">0</button> <!-- makes 0 wide by using two buttons -->
+  <button class="key" data-key=".">.</button>
+  <button class="key" data-key="BACK">⌫</button>
   </div>
+  
   
     </div>
     <p class="hint" style="margin-top:10px">Supported: + − × ÷ ^ % (parentheses), constants <code>pi</code>, <code>e</code>, and functions <code>sqrt</code>, <code>sin</code>, <code>cos</code>, <code>tan</code>, <code>log</code> (base10), <code>ln</code>. Percent works like <code>50%</code> → 0.5.</p>
@@ -99,5 +108,6 @@
   </html>
   
   
-
-
+  
+  
+  
