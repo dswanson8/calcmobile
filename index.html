@@ -1,6 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
+  <!doctype html>
+  <html lang="en">
+  <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Multi‑Line Calculator</title>
@@ -34,8 +34,8 @@
     .badge { padding:2px 8px; border-radius:999px; background:rgba(56,189,248,.15); color: var(--accent); font-size:12px; }
     .empty { color: var(--muted); padding: 16px 20px; }
   </style>
-</head>
-<body>
+  </head>
+  <body>
   <div class="app">
     <div class="card">
       <header>
@@ -49,12 +49,40 @@
         <button id="btn-copy-last">Copy last result</button>
         <span class="hint" id="status"></span>
       </div>
-      <div class="input">
-        <input id="line" type="text" inputmode="text" autocomplete="off"
-       autocapitalize="off" autocorrect="off" spellcheck="false"
-       placeholder="Type an expression..." />
-        <button id="enter">=</button>
-      </div>
+      <!-- existing input block -->
+  <div class="input">
+  <!-- make readonly on touch via JS; leave as normal on desktop -->
+  <input id="line" type="text" autocomplete="off"
+         autocapitalize="off" autocorrect="off" spellcheck="false"
+         placeholder="Type or tap…" />
+  <button id="enter">=</button>
+  </div>
+  
+  <!-- VIRTUAL KEYPAD -->
+  <div class="numpad" aria-label="Calculator keypad">
+  <button class="key" data-key="NumLock" aria-label="Num Lock">Num<br>Lock</button>
+  <button class="key" data-key="/">/</button>
+  <button class="key" data-key="*">*</button>
+  <button class="key tall plus" data-key="+">+</button>
+  
+  <button class="key" data-key="7">7<br><small>Home</small></button>
+  <button class="key" data-key="8">8<br><small>↑</small></button>
+  <button class="key" data-key="9">9<br><small>Pg Up</small></button>
+  
+  <button class="key" data-key="4">4<br><small>End</small></button>
+  <button class="key" data-key="5">5<br><small>•</small></button>
+  <button class="key" data-key="6">6<br><small>→</small></button>
+  <button class="key tall enter" data-key="Enter">Enter</button>
+  
+  <button class="key" data-key="1">1<br><small>←</small></button>
+  <button class="key" data-key="2">2<br><small>↓</small></button>
+  <button class="key" data-key="3">3<br><small>Pg Dn</small></button>
+  
+  <button class="key wide" data-key="0">0<br><small>Ins</small></button>
+  <button class="key" data-key=".">.<br><small>Del</small></button>
+  <button class="key" data-key="-">−</button>
+  </div>
+  
     </div>
     <p class="hint" style="margin-top:10px">Supported: + − × ÷ ^ % (parentheses), constants <code>pi</code>, <code>e</code>, and functions <code>sqrt</code>, <code>sin</code>, <code>cos</code>, <code>tan</code>, <code>log</code> (base10), <code>ln</code>. Percent works like <code>50%</code> → 0.5.</p>
   </div>
@@ -66,6 +94,7 @@
       });
     }
   </script>
-</body>
-</html>
-
+  </body>
+  </html>
+  
+  
