@@ -7,6 +7,32 @@ const statusEl = $('#status');
 let history = JSON.parse(localStorage.getItem('mlc_history') || '[]');
 render();
 
+// Suppress mobile soft keyboard on touch devices (use our virtual keypad)
+if ('ontouchstart' in window) {
+  document.getElementById('line').setAttribute('readonly', 'readonly');
+}
+
+// Map button presses to input
+document.querySelectorAll('.numpad .key').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const k = btn.dataset.key;
+
+    if (k === 'Enter') {
+      document.getElementById('enter').click();
+      return;
+    }
+    if (k === 'NumLock') {
+      // purely cosmetic here; toggle a pressed style if you want
+      btn.classList.toggle('on');
+      return;
+    }
+
+    // Insert character at cursor
+    insertAtCursor(k);
+  });
+});
+
+
 $('#enter').addEventListener('click', evaluateLine);
 inputEl.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') { e.preventDefault(); evaluateLine(); }
@@ -110,3 +136,4 @@ function flashStatus(msg){
   clearTimeout(flashStatus._t);
   flashStatus._t = setTimeout(()=> statusEl.textContent = '', 1600);
 }
+
