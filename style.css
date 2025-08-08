@@ -41,3 +41,55 @@
   color:#fff;
 }
 .hint { opacity:.7; font-size:12px; }
+
+/* NUMPAD LAYOUT & LOOK */
+.numpad {
+  --key-bg: #1f2937;      /* key cap */
+  --key-text: #e5e7eb;    /* main legend */
+  --sub-text: #9ca3af;    /* sub legend */
+  --key-border: #111827;  /* seams */
+  --key-hover: #2b374a;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 64px;
+  gap: 6px;
+  padding: 12px 20px 20px;
+  background: transparent;
+}
+
+.numpad .key {
+  position: relative;
+  background: var(--key-bg);
+  color: var(--key-text);
+  border: 1px solid var(--key-border);
+  border-radius: 6px;
+  font-size: 20px;
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,.25);
+}
+.numpad .key:hover { background: var(--key-hover); }
+.numpad .key:active { transform: translateY(1px); }
+
+.numpad .key.tall { grid-row: span 2; }  /* + and Enter */
+.numpad .key.wide { grid-column: span 2; } /* 0 key */
+
+.numpad .plus { grid-column: 4; grid-row: 1 / span 2; }
+.numpad .enter { grid-column: 4; grid-row: 3 / span 2; }
+
+.numpad .key small {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-size: 11px;
+  color: var(--sub-text);
+}
+
+/* match your existing theme spacing */
+.input { padding: 14px 20px 8px; }
+
