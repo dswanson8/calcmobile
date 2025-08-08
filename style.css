@@ -1,149 +1,98 @@
-  /* Additional styles if you want to split from inline CSS in index.html. Currently unused. */
+/* ===== THEME ===== */
+:root{
+  --bg:#0b1220; --card:#111827; --ink:#e5e7eb; --muted:#9ca3af; --accent:#38bdf8;
+  --key-bg:#1f2937; --key-text:#e5e7eb; --key-border:#111827; --key-hover:#2b374a;
+}
 
-  .keypad {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    padding: 10px 20px 0;
-  }
+/* ===== LAYOUT BASICS ===== */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--ink);
+  display:grid; place-items:center;
+  overscroll-behavior-y:none; /* prevents browser pull-to-refresh */
+}
+.app{width:min(720px,100%); padding:16px; height:100dvh; min-height:100dvh;}
+.card{
+  background:var(--card); border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.3);
+  overflow:hidden; height:100%;
+  display:grid; grid-template-rows:auto auto auto 1fr; /* header, hint/toolbar, input, stack */
+  min-height:0; /* allow the last row to actually shrink */
+}
 
-  .keypad button,
-  .keypad-utility button,
-  #enter {
-    background: #1e293b;
-    border: 1px solid rgba(255, 255, 255, .1);
-    color: #fff;
-    padding: 14px;
-    font-size: 18px;
-    border-radius: 10px;
-    cursor: pointer;
-  }
+/* ===== HEADER / HINT / TOOLBAR ===== */
+header{padding:16px 20px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,.06)}
+header h1{margin:0; font-size:18px; font-weight:600; letter-spacing:.3px}
+header .pill{font-size:12px; color:var(--muted)}
+.hint{color:var(--muted); font-size:12px; padding:8px 20px}
+.toolbar{display:flex; gap:8px; align-items:center; padding:8px 20px}
+.toolbar button{background:#0f172a; border:1px solid rgba(255,255,255,.08); color:var(--ink); padding:10px 12px; border-radius:10px; font-size:14px; cursor:pointer}
+.toolbar button:hover{border-color:rgba(56,189,248,.6)}
+#status{color:var(--muted); font-size:12px}
 
-  .keypad button:hover,
-  .keypad-utility button:hover,
-  #enter:hover {
-    border-color: rgba(56, 189, 248, .6);
-  }
+/* ===== INPUT ===== */
+.input{display:flex; gap:8px; align-items:center; padding:8px 20px}
+#line{
+  flex:1; background:#0f172a; border:1px solid rgba(255,255,255,.12);
+  color:var(--ink); padding:12px 14px; border-radius:10px; font-size:18px;
+  letter-spacing: 1.5px; /* ← added spacing between characters */
+  outline:none;
+}
+#line::placeholder{color:#64748b}
+#enter{background:#1e293b; border:1px solid rgba(255,255,255,.1); color:#fff; padding:12px 16px; font-size:16px; border-radius:10px; cursor:pointer}
+#enter:hover{border-color:rgba(56,189,248,.6)}
 
-  .keypad-utility {
-    display: flex;
-    gap: 8px;
-    padding: 10px 20px 20px;
-    justify-content: space-between;
-  }
+/* ===== STACK: HISTORY (top) & KEYPAD (bottom) ===== */
+/* KEYPAD should be 2x the height of history */
+.stack{
+  display:grid;
+  grid-template-rows:1fr 2fr;  /* ← keypad is 2× history */
+  gap:10px; padding:8px 20px 14px;
+  min-height:0; /* critical for nested grid scrolling */
+}
 
-  .input {
-    display: flex;
-    gap: 8px;
-    padding: 10px 20px 0;
-  }
+/* ===== HISTORY (own scroll) ===== */
+#history{
+  overflow:auto; min-height:0;
+  overscroll-behavior:contain;        /* stop scroll chaining to page */
+  -webkit-overflow-scrolling:touch;
+  border-top:1px solid rgba(255,255,255,.06); padding-top:8px;
+}
+.empty{color:var(--muted); padding:8px 0}
+.row{padding:8px 0; border-bottom:1px dashed rgba(255,255,255,.06)}
+.expr{color:var(--muted); font-size:13px; line-height:1.35; word-wrap:break-word}
+.result{font-size:16px; margin-top:4px; display:flex; align-items:center; gap:8px}
+.clickable{cursor:pointer; border-bottom:1px dotted rgba(56,189,248,.6)}
+.clickable:hover{color:var(--accent)}
 
-  .input input {
-    flex: 1;
-    font-size: 18px;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, .2);
-    background: #0b1220;
-    color: #fff;
-  }
+/* ===== KEYPAD ===== */
+.numpad{
+  height:100%; min-height:240px; /* guarantees it shows on short screens */
+  display:grid; grid-template-columns:repeat(4,1fr);
+  grid-auto-rows:56px; gap:6px; min-height:0;
+}
+.numpad .key{
+  background:var(--key-bg); color:var(--key-text);
+  border:1px solid var(--key-border); border-radius:6px;
+  font-size:18px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; user-select:none; box-shadow:inset 0 -2px 0 rgba(0,0,0,.25);
+}
+.numpad .key:hover{background:var(--key-hover)}
+.numpad .key:active{transform:translateY(1px)}
+.numpad .key.tall{grid-row:span 2}     /* + and Enter span 2 rows */
+.numpad .key.wide{grid-column:span 2}  /* single wide 0 */
+.numpad .plus{  grid-column:4; grid-row:2 / span 2 }
+.numpad .enter{ grid-column:4; grid-row:4 / span 2 }
+.numpad .minus{ grid-column:4; grid-row:1 }
 
-  .hint {
-    opacity: .7;
-    font-size: 12px;
-  }
-
-  /* NUMPAD LAYOUT & LOOK */
-  /* 3:1 split for history:numpad */
-  .stack {
-    display: grid;
-    grid-template-rows: 3fr 1fr;
-    /* <- 3:1 ratio */
-    gap: 10px;
-    min-height: 0;
-    /* allow children to shrink/scroll */
-    padding: 8px 20px 12px;
-  }
-
-  /* History: its own scroll, no overscroll chaining to the page */
-  #history {
-    overflow: auto;
-    min-height: 0;
-    overscroll-behavior: contain;
-    /* stops pull-to-refresh */
-    -webkit-overflow-scrolling: touch;
-    /* smooth iOS scroll */
-    border-top: 1px solid rgba(255, 255, 255, .06);
-  }
-
-  /* Tighter text for more lines visible */
-  .expr {
-    font-size: 13px;
-    line-height: 1.35;
-  }
-
-  .result {
-    font-size: 16px;
-  }
-
-  /* Numpad styling (smaller keys) */
-  .numpad {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 56px;
-    /* was 64px */
-    gap: 6px;
-  }
-
-  .numpad .key {
-    font-size: 18px;
-    /* was 20px */
-    background: #1f2937;
-    color: #e5e7eb;
-    border: 1px solid #111827;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .25);
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .numpad .key:hover {
-    background: #2b374a;
-  }
-
-  .numpad .key:active {
-    transform: translateY(1px);
-  }
-
-  .numpad .key.tall {
-    grid-row: span 2;
-  }
-
-  .numpad .key.wide {
-    grid-column: span 2;
-  }
-
-  /* single wide zero */
-  .numpad .plus {
-    grid-column: 4;
-    grid-row: 2 / span 2;
-  }
-
-  .numpad .enter {
-    grid-column: 4;
-    grid-row: 4 / span 2;
-  }
-
-  .numpad .minus {
-    grid-column: 4;
-    grid-row: 1;
-  }
-
-
-  /* match your existing theme spacing */
-  .input {
-    padding: 14px 20px 8px;
-  }
+/* ===== RESPONSIVE ===== */
+@media (min-width:560px){
+  .expr{font-size:14px}
+  .result{font-size:18px}
+  .numpad .key{font-size:20px}
+}
+@media (max-height:640px){
+  .numpad{grid-auto-rows:48px}
+  .numpad .key{font-size:16px}
+}

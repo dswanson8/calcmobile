@@ -4,217 +4,39 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Multi‑Line Calculator</title>
-  <link rel="manifest" href="manifest.webmanifest">
+  <title>Multi-Line Calculator</title>
   <meta name="theme-color" content="#111827">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="style.css">
-  <style>
-    :root {
-      --bg: #0b1220;
-      --card: #111827;
-      --ink: #e5e7eb;
-      --muted: #9ca3af;
-      --accent: #38bdf8;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-    }
-
-    html,
-    body {
-      height: 100%;
-    }
-
-    .app {
-      height: 100dvh;
-    }
-
-    /* use dynamic vh on mobile */
-    .card {
-      height: 100%;
-      display: grid;
-      grid-template-rows: auto auto auto 1fr;
-    }
-
-    /* rows above: header, hint/toolbar, input, then the stack fills the rest */
-
-
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      display: grid;
-      place-items: center;
-    }
-
-    .app {
-      width: min(720px, 100%);
-      padding: 16px;
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
-      overflow: hidden;
-    }
-
-    header {
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, .06);
-    }
-
-    header h1 {
-      font-size: 18px;
-      margin: 0;
-      letter-spacing: .3px;
-      font-weight: 600;
-    }
-
-    header .pill {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    #history {
-      max-height: min(60vh, 520px);
-      overflow: auto;
-      padding: 8px 20px 0 20px;
-    }
-
-    .row {
-      padding: 10px 0;
-      border-bottom: 1px dashed rgba(255, 255, 255, .06);
-    }
-
-    .expr {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.4;
-      word-wrap: break-word;
-    }
-
-    .result {
-      font-size: 20px;
-      margin-top: 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .clickable {
-      cursor: pointer;
-      border-bottom: 1px dotted rgba(56, 189, 248, .6);
-    }
-
-    .clickable:hover {
-      color: var(--accent);
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 8px;
-      padding: 10px 20px;
-    }
-
-    .toolbar button {
-      background: #0f172a;
-      border: 1px solid rgba(255, 255, 255, .08);
-      color: var(--ink);
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .toolbar button:hover {
-      border-color: rgba(56, 189, 248, .6);
-    }
-
-    .input {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      padding: 14px 20px 20px;
-    }
-
-    #line {
-      flex: 1;
-      background: #0f172a;
-      border: 1px solid rgba(255, 255, 255, .08);
-      color: var(--ink);
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 18px;
-      outline: none;
-    }
-
-    #line::placeholder {
-      color: #64748b;
-    }
-
-    #enter {
-      padding: 12px 16px;
-      font-size: 16px;
-    }
-
-    .hint {
-      color: var(--muted);
-      font-size: 12px;
-      padding: 0 20px 16px;
-    }
-
-    .badge {
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(56, 189, 248, .15);
-      color: var(--accent);
-      font-size: 12px;
-    }
-
-    .empty {
-      color: var(--muted);
-      padding: 16px 20px;
-    }
-  </style>
 </head>
 
 <body>
   <div class="app">
     <div class="card">
       <header>
-        <h1>Multi‑Line Calculator</h1>
-        <span class="pill">Offline‑ready</span>
+        <h1>Multi-Line Calculator</h1>
+        <span class="pill">Offline-ready</span>
       </header>
-      <div id="history" aria-live="polite"></div>
-      <div class="hint">Tip: Press <span class="badge">Enter</span> to evaluate • Click any <strong>number</strong> in
-        history to insert it at the cursor.</div>
+
+      <div class="hint">Tip: Press <b>Enter</b> or tap <b>=</b> • Tap any <b>number</b> in history to insert it at the
+        cursor.</div>
+
       <div class="toolbar">
         <button id="btn-clear">Clear history</button>
         <button id="btn-copy-last">Copy last result</button>
-        <span class="hint" id="status"></span>
+        <span id="status"></span>
       </div>
-      <!-- existing input block -->
+
       <div class="input">
-        <!-- make readonly on touch via JS; leave as normal on desktop -->
+        <!-- readonly is set by JS on touch devices to suppress mobile keyboard -->
         <input id="line" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
-          placeholder="Type or tap…" />
+          placeholder="Type an expression, e.g. (2+3)*4, 10%, sqrt(9), pi^2" />
         <button id="enter">=</button>
       </div>
 
       <div class="stack">
         <div id="history" aria-live="polite"></div>
+
+        <!-- VIRTUAL KEYPAD -->
         <div class="numpad" aria-label="Calculator keypad">
           <!-- Row 1 -->
           <button class="key" data-key="CE">CE</button>
@@ -232,7 +54,7 @@
           <button class="key" data-key="4">4</button>
           <button class="key" data-key="5">5</button>
           <button class="key" data-key="6">6</button>
-          <!-- plus continues here (tall) -->
+          <!-- plus continues -->
 
           <!-- Row 4 -->
           <button class="key" data-key="1">1</button>
@@ -241,25 +63,148 @@
           <button class="key tall enter" data-key="Enter">Enter</button>
 
           <!-- Row 5 -->
-          <button class="key" data-key="0">0</button>
-          <button class="key" data-key="0">0</button> <!-- makes 0 wide by using two buttons -->
+          <button class="key wide" data-key="0">0</button>
           <button class="key" data-key=".">.</button>
           <button class="key" data-key="BACK">⌫</button>
         </div>
       </div>
-
-      <!-- VIRTUAL KEYPAD -->
-
-
-
     </div>
-    <p class="hint" style="margin-top:10px">Supported: + − × ÷ ^ % (parentheses), constants <code>pi</code>,
-      <code>e</code>, and functions <code>sqrt</code>, <code>sin</code>, <code>cos</code>, <code>tan</code>,
-      <code>log</code> (base10), <code>ln</code>. Percent works like <code>50%</code> → 0.5.
-    </p>
   </div>
-  <script src="app.js"></script>
+
   <script>
+    // ===== UTIL =====
+    const $ = (sel) => document.querySelector(sel);
+    const historyEl = $('#history');
+    const inputEl = $('#line');
+    const statusEl = $('#status');
+
+    // On touch devices, suppress mobile keyboard (use virtual keypad)
+    if ('ontouchstart' in window) {
+      inputEl.setAttribute('readonly', 'readonly');
+    }
+
+    // Local history
+    let history = JSON.parse(localStorage.getItem('mlc_history') || '[]');
+    render();
+
+    // Buttons
+    $('#enter').addEventListener('click', evaluateLine);
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); evaluateLine(); }
+    });
+    $('#btn-clear').addEventListener('click', () => {
+      history = []; localStorage.removeItem('mlc_history'); render();
+    });
+    $('#btn-copy-last').addEventListener('click', async () => {
+      if (!history.length) return;
+      const last = history[history.length - 1].result;
+      insertAtCursor(String(last));
+      try { await navigator.clipboard.writeText(String(last)); flashStatus('Copied last result'); } catch { }
+    });
+
+    // Keypad wiring
+    document.querySelectorAll('.numpad .key').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const k = btn.dataset.key;
+        if (k === 'Enter') { $('#enter').click(); return; }
+        if (k === 'CE') { inputEl.value = ''; inputEl.focus(); return; }
+        if (k === 'BACK') {
+          const s = inputEl.selectionStart ?? inputEl.value.length;
+          const e = inputEl.selectionEnd ?? inputEl.value.length;
+          if (s === e && s > 0) {
+            inputEl.value = inputEl.value.slice(0, s - 1) + inputEl.value.slice(e);
+            inputEl.setSelectionRange(s - 1, s - 1);
+          } else {
+            inputEl.value = inputEl.value.slice(0, s) + inputEl.value.slice(e);
+            inputEl.setSelectionRange(s, s);
+          }
+          inputEl.focus();
+          return;
+        }
+        insertAtCursor(k);
+      });
+    });
+
+    // ===== CORE =====
+    function evaluateLine() {
+      const raw = inputEl.value.trim();
+      if (!raw) return;
+      try {
+        const prepared = prepare(raw);
+        // eslint-disable-next-line no-new-func
+        const value = Function('"use strict"; return (' + prepared + ')')();
+        const result = fixFloat(value);
+        history.push({ expr: raw, result });
+        localStorage.setItem('mlc_history', JSON.stringify(history));
+        inputEl.value = '';
+        render(true);
+      } catch (err) {
+        flashStatus('Invalid expression');
+      }
+    }
+
+    function render(scroll = false) {
+      if (!history.length) { historyEl.innerHTML = '<div class="empty">No calculations yet.</div>'; return; }
+      historyEl.innerHTML = history.map((row, i) => `
+        <div class="row" data-idx="${i}">
+          <div class="expr">${highlightNumbers(escapeHtml(row.expr))}</div>
+          <div class="result">= <span class="clickable" data-val="${row.result}">${row.result}</span></div>
+        </div>
+      `).join('');
+      historyEl.querySelectorAll('.clickable').forEach(el => {
+        el.addEventListener('click', (e) => {
+          const val = e.currentTarget.getAttribute('data-val');
+          insertAtCursor(val);
+          navigator.clipboard?.writeText(String(val)).catch(() => { });
+          flashStatus(`Inserted ${val}`);
+        });
+      });
+      if (scroll) historyEl.scrollTop = historyEl.scrollHeight;
+    }
+
+    function insertAtCursor(text) {
+      const start = inputEl.selectionStart ?? inputEl.value.length;
+      const end = inputEl.selectionEnd ?? inputEl.value.length;
+      inputEl.setRangeText(text, start, end, 'end');
+      inputEl.focus();
+    }
+
+    function fixFloat(n) {
+      const rounded = Math.round((n + Number.EPSILON) * 1e12) / 1e12; // up to 12 dp for display
+      return Number(rounded.toString());
+    }
+
+    // Sanitize & map input to safe JS with Math.* and operators
+    function prepare(s) {
+      // Allow digits, operators, dots, commas, spaces, parentheses, and whitelisted fn/const names
+      if (/[^0-9+\-*/%^().,\sA-Za-z]/.test(s)) throw new Error('bad');
+      // Normalize symbols to JS operators
+      s = s.replace(/[−–]/g, '-').replace(/[×x]/gi, '*').replace(/[÷]/g, '/');
+      // Percent: 50% → (50/100)
+      s = s.replace(/(\d+(?:\.\d+)?)%/g, '($1/100)');
+      // Power: a^b → a**b
+      s = s.replace(/\^/g, '**');
+      // Map constants/functions
+      const map = {
+        '\\bpi\\b': 'Math.PI', '\\be\\b': 'Math.E',
+        '\\bsqrt\\b': 'Math.sqrt', '\\bsin\\b': 'Math.sin', '\\bcos\\b': 'Math.cos', '\\btan\\b': 'Math.tan',
+        '\\blog10\\b': 'Math.log10', '\\blog\\b': 'Math.log10', '\\bln\\b': 'Math.log'
+      };
+      for (const [k, v] of Object.entries(map)) s = s.replace(new RegExp(k, 'gi'), v);
+      // Disallow unknown identifiers
+      const ids = s.match(/[A-Za-z_]\w*/g);
+      if (ids && ids.some(id => !/^Math$/i.test(id))) throw new Error('id');
+      return s;
+    }
+
+    function highlightNumbers(html) {
+      // Wrap standalone numbers with clickable spans
+      return html.replace(/(?<![A-Za-z_])(\d+(?:\.\d+)?)(?![A-Za-z_])/g, '<span class="clickable" data-val="$1">$1</span>');
+    }
+    function escapeHtml(s) { return s.replace(/[&<>\"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' }[c])); }
+    function flashStatus(msg) { statusEl.textContent = msg; clearTimeout(flashStatus._t); flashStatus._t = setTimeout(() => statusEl.textContent = '', 1600); }
+
+    // Optional: register service worker if you have one in the repo
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./service-worker.js').catch(() => { });
